@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
@@ -41,11 +41,11 @@ function SignIn() {
   return <button onClick={signInwidthGoogle}>Sign in with Google</button>;
 }
 
-function SignOut() {
-  return (
-    auth.currentUser && <button onClick={() => auth.signOut()}>Sign Out</button>
-  );
-}
+// function SignOut() {
+//   return (
+//     auth.currentUser && <button onClick={() => auth.signOut()}>Sign Out</button>
+//   );
+// }
 
 function ChatRoom() {
   const messagesRef = firestore.collection("messages");
@@ -90,7 +90,7 @@ function ChatMessage(props) {
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
   return (
     <div className={`message ${messageClass}`}>
-      <img src={photoURL}></img>
+      <img src={photoURL} alt="imagegoogle"></img>
       <p>{text}</p>
     </div>
   );
