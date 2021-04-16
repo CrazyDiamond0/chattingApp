@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/fontawesome.min.css";
+import "./App.css";
 
 firebase.initializeApp({
   apiKey: "AIzaSyCANt_Th2lRYnAkgngXkjvl4zN3ValmvH0",
@@ -27,7 +29,9 @@ export default function App() {
   return (
     <div>
       <header></header>
-
+      <div className="header">
+        <SignOut />
+      </div>
       <section>{user ? <ChatRoom></ChatRoom> : <SignIn></SignIn>}</section>
     </div>
   );
@@ -38,18 +42,33 @@ function SignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
   };
-  return <button onClick={signInwidthGoogle}>Sign in with Google</button>;
+  return (
+    <div className="login container">
+      <label>Alex's chat app</label>
+      <button className="btn btn-danger btn-block" onClick={signInwidthGoogle}>
+        <i class="fab fa-google"></i> Sign in with <b>Google</b>
+      </button>
+    </div>
+  );
 }
 
-// function SignOut() {
-//   return (
-//     auth.currentUser && <button onClick={() => auth.signOut()}>Sign Out</button>
-//   );
-// }
+function SignOut() {
+  return (
+    auth.currentUser && (
+      <button
+        className="btn btn-primary button-signout"
+        onClick={() => auth.signOut()}
+      >
+        Sign Out
+      </button>
+    )
+  );
+}
 
 function ChatRoom() {
+  const scrolldown = useRef();
   const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(25);
+  const query = messagesRef.orderBy("createdAt", "desc").limit(11);
   const [messages] = useCollectionData(query, { idField: "id" });
   const [formValue, setFormValue] = useState("");
 
@@ -64,21 +83,30 @@ function ChatRoom() {
       photoURL,
     });
     setFormValue("");
+    scrolldown.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
-      <div>
+      <main className="background-chat">
         {messages &&
-          messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
-      </div>
+          messages
+            .map((msg) => <ChatMessage key={msg.id} message={msg} />)
+            .reverse()}
+        <div ref={scrolldown}></div>
+      </main>
 
-      <form onSubmit={sendMessage}>
+      <form className="input-group form mb-3" onSubmit={sendMessage}>
         <input
+          className="form-control"
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
         ></input>
-        <button type="submit">Submit</button>
+        <div className="input-group-append">
+          <button className="btn btn-outline-secondary" type="submit">
+            Submit
+          </button>
+        </div>
       </form>
     </>
   );
@@ -89,9 +117,9 @@ function ChatMessage(props) {
 
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
   return (
-    <div className={`message ${messageClass}`}>
-      <img src={photoURL} alt="imagegoogle"></img>
-      <p>{text}</p>
+    <div className={`message-${messageClass}`}>
+      <img src={photoURL} className="image" alt="imagegoogle"></img>
+      <p className={`text-${messageClass}`}>{text}</p>
     </div>
   );
 }

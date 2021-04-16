@@ -1,38 +1,82 @@
-.App {
+.login {
+  position: relative;
   text-align: center;
+  top: 40vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
+@keyframes mymove {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
   }
+}
+
+.message-sent {
+  animation: mymove 1s forwards;
+  display: flex;
+  flex-direction: row-reverse;
+  color: white;
+  font-weight: 30px;
+  text-align: right;
+  font-size: 30px;
+  font-family: "Open Sans", sans-serif;
+}
+.message-received {
+  animation: mymove 1s forwards;
+  display: flex;
+  font-family: "Open Sans", sans-serif;
+  color: white;
+  font-size: 30px;
+  text-align: left;
+  font-weight: 30px;
+}
+
+.header {
+  text-align: center;
+  width: 100vw;
+  position: fixed;
+  background-color: gray;
+  z-index: 10000;
+}
+
+.image {
+  border: 4px solid #004c8c;
+  height: 100px;
+  border-radius: 200px;
+  flex: 1;
+}
+
+.background-chat {
+  position: relative;
+  height: 120vh !important;
+  background-color: #58a5f0;
+}
+
+.form {
+  position: fixed;
+  bottom: 2px;
+  position: flex;
+  height: 20px;
+  z-index: 1000;
+}
+.btn-outline-secondary {
+  background-color: white;
+}
+body {
+  position: relative;
+  background-color: #58a5f0;
+}
+.text-sent {
+  background-color: gray;
+  border-radius: 200px;
+  flex: 200;
+  text-align: center;
+}
+.text-received {
+  background-color: #194f85;
+  border-radius: 200px;
+  flex: 200;
+  text-align: center;
 }
